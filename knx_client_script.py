@@ -368,7 +368,7 @@ def send_knx_request(
     conn_resp = knxnet.decode_frame(data_recv)
     logger.info('reponse status: {}'.format(conn_resp.status))
     logger.info('reponse data endpoint: {}'.format(conn_resp.data_endpoint))
-    conn_channel_id= conn_resp.data_endpoint
+    conn_channel_id= conn_resp.channel_id
     ############################################################################
     # @@@ TO BE COMPLETED @@@
     # >>> START OF YOUR WORK
@@ -378,8 +378,6 @@ def send_knx_request(
     conn_state_req_object = knxnet.create_frame(
     knxnet.ServiceTypeDescriptor.CONNECTION_STATE_REQUEST,
     conn_channel_id,control_endpoint)
-    logger.debug('>>> CONNECTION_STATE_REQUEST:\n{}'.format(conn_state_req_object = knxnet.create_frame(
-    )))
     sock.sendto(
     conn_state_req_object.frame,
     (gateway_ip, gateway_port)
@@ -392,7 +390,7 @@ def send_knx_request(
     logger.info('reponse status: {}'.format(con_stat_resp_object.status))
 
     # -> sending tunnelling request
-    dest_addr_group= knxnet.GroupAddress.from_str("x/y/z")
+    dest_addr_group= knxnet.GroupAddress.from_str(args.group_address)
     tunn_ack_object = knxnet.create_frame (
     dest_addr_group,
     data_size,
